@@ -15,6 +15,7 @@ const pi = 3.1415;
 // \t tab
 // \b backspace
 // \f form feed
+// === is strict comparison (data types not converted)
 
 let elementBlock = {
     atomicNumber: 0,
@@ -29,7 +30,28 @@ function exampleFunction() {
     //function body
 }
 
+function makeGrid(width, height){
+    gameGrid = [];
+    var column = [];
+    for(var i=0;i<height;i++){
+        column.push([]);
+    }
+    for(var i=0;i<width;i++){
+        gameGrid.push(column);
+    }
+    console.log("grid made");
+}
 
+function printGrid(){
+    array.forEach(element => {
+        
+    });
+}
+
+makeGrid(3,5);
+console.log(gameGrid);
+makeGrid(5,10);
+console.log(gameGrid);
 
       //main game loop
 /*
