@@ -1,5 +1,7 @@
 console.log("Hello World");
 
+//this is just to collapse visually
+function notes(){
 var exampleVariable = 'something';  //can be used anywhere
 let otherExampleVariable = 'something else';  //can only be used in scope
 const pi = 3.1415;
@@ -29,6 +31,7 @@ let emptyArray = [];
 function exampleFunction() {
     //function body
 }
+}
 
 function makeGrid(width, height){
     gameGrid = [];
@@ -52,6 +55,30 @@ makeGrid(3,5);
 console.log(gameGrid);
 makeGrid(5,10);
 console.log(gameGrid);
+
+//this doesn't loop the wait command, it waits the loop command...? Going to use setInterval instead
+console.log("test");
+for(let i=0; i<10; i++){
+    setTimeout(() => {
+        console.log("doing "+i);
+    }, 1000);    
+}
+
+var i=0;
+console.log("test");
+var gameloopID = setInterval(()=> {
+    console.log("doing ");
+    i++;
+    if(i>10){
+        clearInterval(gameloopID);
+    }
+},1000);
+
+
+
+
+//wait(1000);
+
 
       //main game loop
 /*
