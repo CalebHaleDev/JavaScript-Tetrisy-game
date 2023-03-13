@@ -35,44 +35,39 @@ function exampleFunction() {
 
 function makeGrid(width, height){
     gameGrid = [];
-    var column = [];
-    for(var i=0;i<height;i++){
-        column.push([]);
-    }
+    var row = [];
     for(var i=0;i<width;i++){
-        gameGrid.push(column);
+        row.push(0);
+    }
+    for(var i=0;i<height;i++){
+        gameGrid.push(row);
     }
     console.log("grid made");
+    console.log(gameGrid);
 }
 
 function printGrid(){
-    array.forEach(element => {
-        
+    gameGrid.forEach(element => {
+        console.log(element);
     });
 }
 
 makeGrid(3,5);
-console.log(gameGrid);
-makeGrid(5,10);
-console.log(gameGrid);
+printGrid();
 
-//this doesn't loop the wait command, it waits the loop command...? Going to use setInterval instead
-console.log("test");
-for(let i=0; i<10; i++){
-    setTimeout(() => {
-        console.log("doing "+i);
-    }, 1000);    
-}
+
+
+
 
 var i=0;
 console.log("test");
 var gameloopID = setInterval(()=> {
     console.log("doing ");
     i++;
-    if(i>10){
+    if(i>1){
         clearInterval(gameloopID);
     }
-},1000);
+},100);
 
 
 
