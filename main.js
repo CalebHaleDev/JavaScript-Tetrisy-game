@@ -1,18 +1,12 @@
-console.log("Hello World");
-
 //this is in a function just to collapse visually
 function notes(){
 var exampleVariable = 'something';  //can be used anywhere, can declare multiple in the same scope
 let otherExampleVariable = 'something else';  //can only be used in scope, can't declare multiple times in same scope
 const pi = 3.1415;
-//strings, numbers, and booleans are the only primitive dataTypes
-//JS is dynamic, so the data types can change at runtime
-//objects, arrays and functions are reference type variables
 //+= can be used with strings
 // ', ", and ` can be used around strings, so delimiting \ wouldn't be necessary
 //other escapes/delimits:
 // \\ backslash
-// \n newline
 // \carriage return
 // \t tab
 // \b backspace
@@ -26,16 +20,9 @@ let elementBlock = {
 };
 //dot notation is fine, or brackets, i.e. element['charge'] = 0; which is useful if the variable name is unknown or variable.
 
-let emptyArray = [];
-
-function exampleFunction() {
-    //function body
-}
-
 //the or operator || can be used to pass in a default value in a return statement if another value doesn't exist
 //tertiary operation is condition ? statement-if-true : statement-if-false;
 //"use strict"; does checking for common mistakes
-//wait(1000);       //why doesn't wait work?
 
 }
 
@@ -52,10 +39,7 @@ function makeGrid(width, height){
     //console.log(gameGrid);
 }
 function printGrid(){
-    for(let i=0;i<2;i++){   //spacer
-        console.log("");
-        console.log(".");
-    }
+    console.log("\n\n\n\n");     //spacer
     gameGrid.forEach(element => {
         console.log(element);
     });
@@ -63,7 +47,7 @@ function printGrid(){
     console.log("faller is at "+fallerCoords);
 }
 function gameSetup(){
-    //settings:
+    //settings:         you could get user input to change these
     let startingLevel = 4;
     let unscaledWidth = 1;
     let unscaledHeight = 5;
@@ -109,7 +93,6 @@ function doGravity(){
         });
     }
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
-    level -= .02;   //this is a temporary game-ender
 }
 function shiftFaller(direction){
     //if direction is not 0, set newlocation to fallerCoord +- direction, otherwise new location is downward
@@ -122,13 +105,12 @@ function shiftFaller(direction){
     }*/
     //set shiftTimer = now + difficulty/20 sec (only if shift successful?)
 }
-function setFaller(x, value){
-    gameGrid[0][x] = value;
-    fallerCoords = [x,0];
+function setFaller(xPosition, value){
+    gameGrid[0][xPosition] = value;
+    fallerCoords = [xPosition,0];
 }
 
 gameSetup();
-
 //main game loop
 var gameloopID = setInterval(()=> {
     //do gravity
@@ -145,16 +127,14 @@ this.addEventListener('keypress', event => {
     }
   })
 */
-let keypressed = null;
-
+let keypressed = null;  //get input
 if(shiftTimer<Date.now()&& keypressed!=null){
     //shift block function, with direction argument via tertiary operator
 }
 
-
-    if(level<1){
+    if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
-},100); //change rate lower later
+},50); //change rate lower later
 
 console.log("game over");
