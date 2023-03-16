@@ -76,9 +76,6 @@ function gameSetup(){
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
     console.log("starting game loop");
-    console.log("now is "+Date.now());
-    console.log("gravityTimer is "+gravityTimer);
-    console.log("shiftTimer is "+shiftTimer);
 }
 function doGravity(){
     //if the faller is landing at the top row, end game immediately
@@ -134,12 +131,13 @@ gameSetup();
 
 //main game loop
 var gameloopID = setInterval(()=> {
-
+    //do gravity
     if(gravityTimer<Date.now()){
     doGravity();
     printGrid();
 }
 
+//do user input
 /*
 this.addEventListener('keypress', event => {
     if (event.code == 13) {
@@ -147,25 +145,16 @@ this.addEventListener('keypress', event => {
     }
   })
 */
-let keypressed = 0;
+let keypressed = null;
+
 if(shiftTimer<Date.now()&& keypressed!=null){
-    //stuff below
+    //shift block function, with direction argument via tertiary operator
 }
-/*
-
- * 
- * if (userTime < now && keypressed){
- * tertiary for direction based on keypressed
- *  shiftFaller(direction)
- * }
- * 
- */
 
 
-    //console.log("doing main loop");
     if(level<1){
         clearInterval(gameloopID);
     }
-},100); //change rate to 5 later
+},100); //change rate lower later
 
 console.log("game over");
