@@ -52,23 +52,27 @@ function makeGrid(width, height){
     //console.log(gameGrid);
 }
 function printGrid(){
+    for(let i=0;i<2;i++){   //spacer
+        console.log("");
+        console.log(".");
+    }
     gameGrid.forEach(element => {
         console.log(element);
     });
     console.log("btw, now is "+(Date.now()%10000));
+    console.log("faller is at "+fallerCoords);
 }
 function gameSetup(){
     //settings:
-    let startingLevel = 2;
+    let startingLevel = 4;
     let unscaledWidth = 1;
     let unscaledHeight = 5;
     emptySpaceCharacter = "_";
     //initialize game
     level = startingLevel;
     makeGrid(level+unscaledWidth, level+unscaledHeight);
-    //gameGrid[0][0] = 1;
+    setFaller(0,1);
     printGrid();
-    fallerCoords = [0,0];
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
     console.log("starting game loop");
@@ -77,6 +81,11 @@ function gameSetup(){
     console.log("shiftTimer is "+shiftTimer);
 }
 function doGravity(){
+    //if the faller is landing at the top row, end game immediately
+    if(fallerCoords[1]==0 && gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
+        level = 0;
+        return;     //not necessary, but skips some redundant lines
+        }
     //move everything down
     for(let column = gameGrid[0].length; column>0; column--){
         for(let row = gameGrid.length-1; row>0; row--){
@@ -90,15 +99,8 @@ function doGravity(){
 
     //if the faller lands
     if(fallerCoords[1]==gameGrid.length-1 || gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
-        //check for game over
-        if(fallerCoords[1]=0){
-            level = 0;
-            return;     //not necessary, but skips some redundant lines
-        }
-        
         //make new faller
-        gameGrid[0][1] = 1; //replace the 1 with whatever is falling
-        fallerCoords = [0,0];
+        setFaller(1,1);
 
         //check for rows made. This could be changed to only check the row the faller landed in in the future for efficiency
         gameGrid.forEach(element => {
@@ -109,10 +111,8 @@ function doGravity(){
             }
         });
     }
-    console.log("faller is at "+fallerCoords);
-    
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
-    level -= .02;
+    level -= .02;   //this is a temporary game-ender
 }
 function shiftFaller(direction){
     //if direction is not 0, set newlocation to fallerCoord +- direction, otherwise new location is downward
@@ -125,7 +125,10 @@ function shiftFaller(direction){
     }*/
     //set shiftTimer = now + difficulty/20 sec (only if shift successful?)
 }
-
+function setFaller(x, value){
+    gameGrid[0][x] = value;
+    fallerCoords = [x,0];
+}
 
 gameSetup();
 
@@ -165,4 +168,4 @@ if(shiftTimer<Date.now()&& keypressed!=null){
     }
 },100); //change rate to 5 later
 
-console.log("game ended");
+console.log("game over");
