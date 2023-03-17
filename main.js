@@ -25,6 +25,20 @@ let elementBlock = {
 //"use strict"; does checking for common mistakes
 
 }
+//to do list:
+//figure out 2d array value assignment (not a column)
+//figure out a console display on a page (adjusting data if needed)
+//add key detection
+//add shifting faller function
+//add score, unlocking higher levels and level selection
+//better graphics? (Actual graphics)?
+//add "completed rows" panel, score bonus
+
+//next version to-do list:
+//unfinished items from above
+//better graphics (actual graphics) if not done already
+//element dataType
+//special powerups
 
 function makeGrid(width, height){
     gameGrid = [];
@@ -39,12 +53,15 @@ function makeGrid(width, height){
     //console.log(gameGrid);
 }
 function printGrid(){
-    console.log("\n\n\n\n");     //spacer
+    document.getElementById("gameDisplay").innerHTML = "<br>";
     gameGrid.forEach(element => {
         console.log(element);
+        document.getElementById("gameDisplay").innerHTML += element + "<br>";
     });
     console.log("btw, now is "+(Date.now()%10000));
     console.log("faller is at "+fallerCoords);
+    document.getElementById("gameDisplay").innerHTML += "btw, now is "+(Date.now()%10000)+"<br>";
+    document.getElementById("gameDisplay").innerHTML += "faller is at "+fallerCoords+"<br>";
 }
 function gameSetup(){
     //settings:         you could get user input to change these
@@ -55,7 +72,7 @@ function gameSetup(){
     //initialize game
     level = startingLevel;
     makeGrid(level+unscaledWidth, level+unscaledHeight);
-    setFaller(0,1);
+    setFaller(1,1);
     printGrid();
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
@@ -119,22 +136,25 @@ var gameloopID = setInterval(()=> {
     printGrid();
 }
 
+
 //do user input
-/*
+
 this.addEventListener('keypress', event => {
-    if (event.code == 13) {
+    document.getElementById("gameDisplay").innerHTML += "key: "+event.code;
+    if (event.code >1) {
       alert('hi.')
     }
   })
-*/
+
 let keypressed = null;  //get input
 if(shiftTimer<Date.now()&& keypressed!=null){
     //shift block function, with direction argument via tertiary operator
 }
 
-    if(level<1){    //end game condition
+   if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
 },50); //change rate lower later
 
 console.log("game over");
+document.getElementById("gameDisplay").innerHTML += "game over";
