@@ -27,8 +27,6 @@ let elementBlock = {
 }
 //to do list:
 //figure out 2d array value assignment (not a column)
-//figure out a console display on a page (adjusting data if needed)
-//add key detection
 //add shifting faller function
 //add score, unlocking higher levels and level selection
 //better graphics? (Actual graphics)?
@@ -76,12 +74,14 @@ function gameSetup(){
     printGrid();
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
+    keypressed = null;
+    validKeys = ["A","S","D"];
     console.log("starting game loop");
 }
 function doGravity(){
     //if the faller is landing at the top row, end game immediately
     if(fallerCoords[1]==0 && gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
-        level = 0;
+        //level = 0;
         return;     //not necessary, but skips some redundant lines
         }
     //move everything down
@@ -110,8 +110,10 @@ function doGravity(){
         });
     }
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
+    level -= .05;
 }
 function shiftFaller(direction){
+    document.getElementById("gameDisplay").innerHTML += "shifting: "+direction;
     //if direction is not 0, set newlocation to fallerCoord +- direction, otherwise new location is downward
     /*if(newlocation is open){
         set the newlocation to the faller
@@ -136,25 +138,24 @@ var gameloopID = setInterval(()=> {
     printGrid();
 }
 
-
-//do user input
-
+//get user input
 this.addEventListener('keypress', event => {
-    document.getElementById("gameDisplay").innerHTML += "key: "+event.code;
-    if (event.code >1) {
-      alert('hi.')
-    }
+    document.getElementById("gameDisplay").innerHTML += "key: "+event.code + (validKeys.includes(event.code) ? "found" : "not found") + "<br>";
+    //document.getElementById("gameDisplay").innerHTML += "valid keys: " + validKeys;
+    keypressed = event.code;
+    document.getElementById("gameDisplay").innerHTML += "key: "+event.code + (validKeys.includes(keypressed) ? "found" : "not found")+ "<br>";
   })
-
-let keypressed = null;  //get input
-if(shiftTimer<Date.now()&& keypressed!=null){
-    //shift block function, with direction argument via tertiary operator
+//do user input
+if(shiftTimer<Date.now() && validKeys.includes(keypressed)){
+    shiftFaller(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
+    document.getElementById("gameDisplay").innerHTML += "shifting: "+(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
 }
+keypressed = null;
 
    if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
-},50); //change rate lower later
+},500); //change rate lower later
 
 console.log("game over");
 document.getElementById("gameDisplay").innerHTML += "game over";
