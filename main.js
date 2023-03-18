@@ -119,12 +119,12 @@ var gameloopID = setInterval(()=> {
 //get user input
 this.addEventListener('keypress', event => {
     keypressed = event.code[3];
-    print(event.code[3]+" pressed, "+(validKeys.includes(keypressed) ? "found" : "not found") + " in valid keys <br>");
+    //print(event.code[3]+" pressed, "+(validKeys.includes(keypressed) ? "found" : "not found") + " in valid keys <br>");
   })
 //do user input
 if(shiftTimer<Date.now() && validKeys.includes(keypressed)){
     shiftFaller(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
-    document.getElementById("gameDisplay").innerHTML += "shifting: "+(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
+    //document.getElementById("gameDisplay").innerHTML += "shifting: "+(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
 }
 keypressed = null;
 
