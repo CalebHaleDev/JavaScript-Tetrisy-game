@@ -62,6 +62,7 @@ function printGrid(){
     console.log("faller is at "+fallerCoords);
     document.getElementById("gameDisplay").innerHTML += "btw, now is "+(Date.now()%10000)+"<br>";
     document.getElementById("gameDisplay").innerHTML += "faller is at "+fallerCoords+"<br>";
+    document.getElementById("gameDisplay").innerHTML += "0,1: "+gameGrid[1][0]+"<br>";
 }
 function gameSetup(){
     //settings:         you could get user input to change these
@@ -80,7 +81,7 @@ function gameSetup(){
     validKeys = ["A","S","D"];
     elementList = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg"];
     periodicTable = {"H":-1, "He":+1, "Li":-1, "Be":-2, "B":-3, "C": -+4, "N":+3, "O":+2, "F":+1, "Ne":0, "Na":-1, "Mg":-2};
-    document.getElementById("gameDisplay").innerHTML += periodicTable["H"];
+    //document.getElementById("gameDisplay").innerHTML += periodicTable["H"];
     console.log("starting game loop");
 }
 function doGravity(){
@@ -90,7 +91,7 @@ function doGravity(){
         return;     //not necessary, but skips some redundant lines
         }
     //move everything down
-    for(let column = gameGrid[0].length; column>0; column--){
+    for(let column = gameGrid[0].length; column>-1; column--){
         for(let row = gameGrid.length-1; row>0; row--){
             if(gameGrid[row][column]==emptySpaceCharacter){
                 gameGrid[row][column] = gameGrid[row-1][column];
@@ -109,13 +110,13 @@ function doGravity(){
         gameGrid.forEach(element => {
             if(element.indexOf(emptySpaceCharacter)==-1){   //if there's no empty space in the row
                 console.log("row made: "+element);
-                gameGrid[gameGrid.indexOf(element)] = emptyRow; //clear row
+                gameGrid[gameGrid.indexOf(element)] = emptyRow.map(x => x); //clear row
                 //could also set the row to a "win row" to show visually, print out the grid once to make sure it displays, then wipe it, just for a fun visual
             }
         });
     }
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
-    level -= .05;
+    //level -= .05;
 }
 function shiftFaller(direction){
     document.getElementById("gameDisplay").innerHTML += "shifting: "+direction;
@@ -159,7 +160,7 @@ keypressed = null;
    if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
-},500); //change rate lower later
+},100); //change rate lower later
 
 console.log("game over");
 document.getElementById("gameDisplay").innerHTML += "game over";
