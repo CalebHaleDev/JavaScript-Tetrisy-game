@@ -23,8 +23,10 @@ let elementBlock = {
 //the or operator || can be used to pass in a default value in a return statement if another value doesn't exist
 //tertiary operation is condition ? statement-if-true : statement-if-false;
 //"use strict"; does checking for common mistakes
+//use Object.freeze(object); to prevent data changing (read-only, like constants)
 
 }
+
 //to do list:
 //figure out 2d array value assignment (not a column)
 //add shifting faller function
@@ -45,7 +47,7 @@ function makeGrid(width, height){
         emptyRow.push(emptySpaceCharacter);
     }
     for(var i=0;i<height;i++){
-        gameGrid.push(emptyRow);
+        gameGrid.push(emptyRow.map(x => x));
     }
     console.log("grid made");
     //console.log(gameGrid);
@@ -70,7 +72,7 @@ function gameSetup(){
     //initialize game
     level = startingLevel;
     makeGrid(level+unscaledWidth, level+unscaledHeight);
-    setFaller(1,1);
+    setFaller(Math.floor(Math.random()*(gameGrid[0].length+1)), Math.floor(Math.random()*(level))+1);
     printGrid();
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
@@ -98,7 +100,7 @@ function doGravity(){
     //if the faller lands
     if(fallerCoords[1]==gameGrid.length-1 || gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
         //make new faller
-        setFaller(1,1);
+        setFaller(Math.floor(Math.random()*(gameGrid[0].length+1)), Math.floor(Math.random()*(level))+1);
 
         //check for rows made. This could be changed to only check the row the faller landed in in the future for efficiency
         gameGrid.forEach(element => {
@@ -140,10 +142,9 @@ var gameloopID = setInterval(()=> {
 
 //get user input
 this.addEventListener('keypress', event => {
-    document.getElementById("gameDisplay").innerHTML += "key: "+event.code + (validKeys.includes(event.code) ? "found" : "not found") + "<br>";
-    //document.getElementById("gameDisplay").innerHTML += "valid keys: " + validKeys;
-    keypressed = event.code;
-    document.getElementById("gameDisplay").innerHTML += "key: "+event.code + (validKeys.includes(keypressed) ? "found" : "not found")+ "<br>";
+    keypressed = event.code==key_A ? "A" : event.code==key_S ? "S" : event.code==key_D ? "D" : "!";
+    alert("pressed");
+    document.getElementById("gameDisplay").innerHTML += "key: "+keypressed + (validKeys.includes(keypressed) ? "found" : "not found") + "<br>";
   })
 //do user input
 if(shiftTimer<Date.now() && validKeys.includes(keypressed)){
