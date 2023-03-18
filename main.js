@@ -28,7 +28,6 @@ let elementBlock = {
 }
 
 //to do list:
-//figure out 2d array value assignment (not a column)
 //add shifting faller function
 //add score, unlocking higher levels and level selection
 //better graphics? (Actual graphics)?
@@ -69,18 +68,19 @@ function gameSetup(){
     let startingLevel = 4;
     let unscaledWidth = 1;
     let unscaledHeight = 5;
-    emptySpaceCharacter = "_";
+    emptySpaceCharacter = "__";
     //initialize game
+    elementList = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg"];
+    periodicTable = {"H":-1, "He":+1, "Li":-1, "Be":-2, "B":-3, "C": +4, "N":+3, "O":+2, "F":+1, "Ne":0, "Na":-1, "Mg":-2};
     level = startingLevel;
     makeGrid(level+unscaledWidth, level+unscaledHeight);
-    setFaller(Math.floor(Math.random()*(gameGrid[0].length)), Math.floor(Math.random()*(level))+1);
+    setFaller(Math.floor(Math.random()*(gameGrid[0].length)), elementList[Math.floor(Math.random()*(level))] );
     printGrid();
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
     keypressed = null;
     validKeys = ["A","S","D"];
-    elementList = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg"];
-    periodicTable = {"H":-1, "He":+1, "Li":-1, "Be":-2, "B":-3, "C": -+4, "N":+3, "O":+2, "F":+1, "Ne":0, "Na":-1, "Mg":-2};
+    
     //document.getElementById("gameDisplay").innerHTML += periodicTable["H"];
     console.log("starting game loop");
 }
@@ -104,7 +104,7 @@ function doGravity(){
     //if the faller lands
     if(fallerCoords[1]==gameGrid.length-1 || gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
         //make new faller
-        setFaller(Math.floor(Math.random()*(gameGrid[0].length)), Math.floor(Math.random()*(level))+1);
+        setFaller(Math.floor(Math.random()*(gameGrid[0].length)), elementList[Math.floor(Math.random()*(level))] );
 
         //check for rows made. This could be changed to only check the row the faller landed in in the future for efficiency
         gameGrid.forEach(element => {
