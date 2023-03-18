@@ -47,7 +47,7 @@ function makeGrid(width, height){
         emptyRow.push(emptySpaceCharacter);
     }
     for(var i=0;i<height;i++){
-        gameGrid.push(emptyRow.map(x => x));
+        gameGrid.push(emptyRow.map(x => x));        //future research: how to dereference
     }
     console.log("grid made");
     //console.log(gameGrid);
@@ -72,18 +72,21 @@ function gameSetup(){
     //initialize game
     level = startingLevel;
     makeGrid(level+unscaledWidth, level+unscaledHeight);
-    setFaller(Math.floor(Math.random()*(gameGrid[0].length+1)), Math.floor(Math.random()*(level))+1);
+    setFaller(Math.floor(Math.random()*(gameGrid[0].length)), Math.floor(Math.random()*(level))+1);
     printGrid();
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
     keypressed = null;
     validKeys = ["A","S","D"];
+    elementList = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg"];
+    periodicTable = {"H":-1, "He":+1, "Li":-1, "Be":-2, "B":-3, "C": -+4, "N":+3, "O":+2, "F":+1, "Ne":0, "Na":-1, "Mg":-2};
+    document.getElementById("gameDisplay").innerHTML += periodicTable["H"];
     console.log("starting game loop");
 }
 function doGravity(){
     //if the faller is landing at the top row, end game immediately
     if(fallerCoords[1]==0 && gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
-        //level = 0;
+        level = 0;
         return;     //not necessary, but skips some redundant lines
         }
     //move everything down
@@ -100,7 +103,7 @@ function doGravity(){
     //if the faller lands
     if(fallerCoords[1]==gameGrid.length-1 || gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
         //make new faller
-        setFaller(Math.floor(Math.random()*(gameGrid[0].length+1)), Math.floor(Math.random()*(level))+1);
+        setFaller(Math.floor(Math.random()*(gameGrid[0].length)), Math.floor(Math.random()*(level))+1);
 
         //check for rows made. This could be changed to only check the row the faller landed in in the future for efficiency
         gameGrid.forEach(element => {
@@ -142,7 +145,7 @@ var gameloopID = setInterval(()=> {
 
 //get user input
 this.addEventListener('keypress', event => {
-    keypressed = event.code==key_A ? "A" : event.code==key_S ? "S" : event.code==key_D ? "D" : "!";
+    keypressed = (event.code==key_A ? "A" : event.code==key_S ? "S" : event.code==key_D ? "D" : "!");
     alert("pressed");
     document.getElementById("gameDisplay").innerHTML += "key: "+keypressed + (validKeys.includes(keypressed) ? "found" : "not found") + "<br>";
   })
