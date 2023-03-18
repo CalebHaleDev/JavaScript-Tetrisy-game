@@ -51,23 +51,26 @@ function makeGrid(width, height){
     console.log("grid made");
     //console.log(gameGrid);
 }
+function print(printText){
+    document.getElementById("gameDisplay").innerHTML += printText;
+}
 function printGrid(){
     document.getElementById("gameDisplay").innerHTML = "<br>";
     gameGrid.forEach(element => {
-        console.log(element);
-        document.getElementById("gameDisplay").innerHTML += element + "<br>";
+        element.forEach(element => {
+            print(element.length==emptySpaceCharacter.length ? element : element+emptySpaceCharacter[0]);
+        });
+        print("<br>");
     });
-    console.log("btw, now is "+(Date.now()%10000));
-    console.log("faller is at "+fallerCoords);
-    document.getElementById("gameDisplay").innerHTML += "btw, now is "+(Date.now()%10000)+"<br>";
-    document.getElementById("gameDisplay").innerHTML += "faller is at "+fallerCoords+"<br>";
-    document.getElementById("gameDisplay").innerHTML += "0,1: "+gameGrid[1][0]+"<br>";
+    //print("btw, now is "+(Date.now()%10000)+"<br>");
+    //print("faller is at "+fallerCoords+"<br>");
 }
 function gameSetup(){
     //settings:         you could get user input to change these
     let startingLevel = 4;
     let unscaledWidth = 1;
     let unscaledHeight = 5;
+    emptySpaceCharacter = "  ";
     emptySpaceCharacter = "__";
     //initialize game
     elementList = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg"];
@@ -80,9 +83,7 @@ function gameSetup(){
     shiftTimer=Date.now()+(1000*level/20);
     keypressed = null;
     validKeys = ["A","S","D"];
-    
-    //document.getElementById("gameDisplay").innerHTML += periodicTable["H"];
-    console.log("starting game loop");
+    print("starting game loop");
 }
 function doGravity(){
     //if the faller is landing at the top row, end game immediately
@@ -109,7 +110,7 @@ function doGravity(){
         //check for rows made. This could be changed to only check the row the faller landed in in the future for efficiency
         gameGrid.forEach(element => {
             if(element.indexOf(emptySpaceCharacter)==-1){   //if there's no empty space in the row
-                console.log("row made: "+element);
+                print("row made: "+element);
                 gameGrid[gameGrid.indexOf(element)] = emptyRow.map(x => x); //clear row
                 //could also set the row to a "win row" to show visually, print out the grid once to make sure it displays, then wipe it, just for a fun visual
             }
@@ -120,15 +121,14 @@ function doGravity(){
 }
 function shiftFaller(direction){
     document.getElementById("gameDisplay").innerHTML += "shifting: "+direction;
-    //if direction is not 0, set newlocation to fallerCoord +- direction, otherwise new location is downward
-    /*if(newlocation is open){
-        set the newlocation to the faller
-        set the old location to blank
-        change the faller coordinates
+    let newLocation = direction==0 ? [fallerCoords[0],fallerCoords[1]+1] : [fallerCoords[0]+direction,fallerCoords[1]];
+    if(gameGrid[newLocation[1]][newLocation[0]]==emptySpaceCharacter){  //if newLocation is open...
+        gameGrid[newLocation[1]][newLocation[0]] = gameGrid[fallerCoords[1]][fallerCoords[0]];  //set the newLocation to the faller
+        gameGrid[fallerCoords[1]][fallerCoords[0]] = emptySpaceCharacter;       //and set the faller to a blank space
+        fallerCoords = [newLocation[0],newLocation[1]];
         //if moving downward, increase score?
-        //set shiftTimer = now + difficulty/20 sec (only if shift successful?)
-    }*/
-    //set shiftTimer = now + difficulty/20 sec (only if shift successful?)
+    }
+    shiftTimer=Date.now()+Math.max(1000*(level/20),250); //only if shift successful?
 }
 function setFaller(xPosition, value){
     gameGrid[0][xPosition] = value;
@@ -156,6 +156,8 @@ if(shiftTimer<Date.now() && validKeys.includes(keypressed)){
     document.getElementById("gameDisplay").innerHTML += "shifting: "+(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
 }
 keypressed = null;
+
+
 
    if(level<1){    //end game condition
         clearInterval(gameloopID);
