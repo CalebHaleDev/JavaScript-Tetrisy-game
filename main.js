@@ -1,32 +1,3 @@
-//this is in a function just to collapse visually
-function notes(){
-var exampleVariable = 'something';  //can be used anywhere, can declare multiple in the same scope
-let otherExampleVariable = 'something else';  //can only be used in scope, can't declare multiple times in same scope
-const pi = 3.1415;
-//+= can be used with strings
-// ', ", and ` can be used around strings, so delimiting \ wouldn't be necessary
-//other escapes/delimits:
-// \\ backslash
-// \carriage return
-// \t tab
-// \b backspace
-// \f form feed
-// === is strict comparison (data types not converted)
-
-let elementBlock = {
-    atomicNumber: 0,
-    electrons: 0,
-    charge:0
-};
-//dot notation is fine, or brackets, i.e. element['charge'] = 0; which is useful if the variable name is unknown or variable.
-
-//the or operator || can be used to pass in a default value in a return statement if another value doesn't exist
-//tertiary operation is condition ? statement-if-true : statement-if-false;
-//"use strict"; does checking for common mistakes
-//use Object.freeze(object); to prevent data changing (read-only, like constants)
-
-}
-
 //to do list:
 //add shifting faller function
 //add score, unlocking higher levels and level selection
@@ -138,6 +109,7 @@ function setFaller(xPosition, value){
 gameSetup();
 //main game loop
 var gameloopID = setInterval(()=> {
+
     //do gravity
     if(gravityTimer<Date.now()){
     doGravity();
@@ -146,9 +118,8 @@ var gameloopID = setInterval(()=> {
 
 //get user input
 this.addEventListener('keypress', event => {
-    keypressed = (event.code==key_A ? "A" : event.code==key_S ? "S" : event.code==key_D ? "D" : "!");
-    alert("pressed");
-    document.getElementById("gameDisplay").innerHTML += "key: "+keypressed + (validKeys.includes(keypressed) ? "found" : "not found") + "<br>";
+    keypressed = event.code[3];
+    print(event.code[3]+" pressed, "+(validKeys.includes(keypressed) ? "found" : "not found") + " in valid keys <br>");
   })
 //do user input
 if(shiftTimer<Date.now() && validKeys.includes(keypressed)){
