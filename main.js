@@ -1,8 +1,3 @@
-//to do list:
-//add score, unlocking higher levels and level selection
-//better graphics? (Actual graphics)?
-//adjust row-counter to disregard order - only what items are present
-
 //gameSetup
     //settings:         you could get user input to change these
     emptySpaceCharacter = "__";
@@ -15,7 +10,6 @@
     const periodicTable = {"H":-1, "He":+1, "Li":-1, "Be":-2, "B":-3, "C": +4, "N":+3, "O":+2, "F":+1, "Ne":0, "Na":-1, "Mg":-2};
     const validKeys = ["A","S","D"];
     level = unlockedLevels;
-    levelSetup(1, 5);   //specify additional width, height changes
 
 function levelSetup(unscaledWidth, unscaledHeight){
     makeGrid(level+unscaledWidth, level+unscaledHeight);
@@ -72,15 +66,7 @@ function doGravity(){
         return;     //not necessary, but skips some redundant lines
         }
     //move everything down
-    //mainGravityShift();
-    for(let column = gameGrid[0].length; column>-1; column--){
-        for(let row = gameGrid.length-1; row>0; row--){
-            if(gameGrid[row][column]==emptySpaceCharacter){
-                gameGrid[row][column] = gameGrid[row-1][column];
-                gameGrid[row-1][column] = emptySpaceCharacter;
-            }
-        }
-    }
+    mainGravityShift();
     fallerCoords[1]++;
 
     //if the faller lands
@@ -98,7 +84,6 @@ function doGravity(){
                     score+=5;
                 }
             }
-            
         //make new faller
         setFaller(Math.floor(Math.random()*(gameGrid[0].length)), elementList[Math.floor(Math.random()*(level+1))] );
         });
@@ -121,41 +106,28 @@ function setFaller(xPosition, value){
     gameGrid[0][xPosition] = value;
     fallerCoords = [xPosition,0];
 }
-
-//for(var maximumLevel = 20; unlockedLevels<maximumLevel; print("Next Level!")){
     level = unlockedLevels;
     levelSetup(1,5);
-
 //main game loop
 var gameloopID = setInterval(()=> {
     //get user input
     this.addEventListener('keypress', event => {
         keypressed = event.code[3];
     //print(event.code[3]+" pressed, "+(validKeys.includes(keypressed) ? "found" : "not found") + " in valid keys <br>");
-  })
-  //do user input
-  if(shiftTimer<Date.now() && validKeys.includes(keypressed)){
+    })
+    //do user input
+    if(shiftTimer<Date.now() && validKeys.includes(keypressed)){
     shiftFaller(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
     //document.getElementById("gameDisplay").innerHTML += "shifting: "+(keypressed=="A" ? -1 : keypressed=="S" ? 0 : keypressed=="D" ? 1 : null);
-}
-keypressed = null;
+    }
+    keypressed = null;
     //do gravity
     if(gravityTimer<Date.now()){
         doGravity();
         printGrid();
     }
-
-   if(level<1){    //end game condition
+    if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
 },100); //refresh rate
-
 print("game over");
-if(score>level*100){
-    unlockedLevels++;
-}else{
-    print("you didn't get a high enough score to continue. Thanks for playing!");
-    //is there a way to quit or "return" from the main function?
-}
-//}
-print("you beat all "+maximumLevel+" levels! Good job!");
