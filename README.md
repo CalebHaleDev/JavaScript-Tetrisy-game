@@ -2,7 +2,7 @@
 
 My goal with this project was to learn Javascript and how to implement it in a browser, and try to make a Tetris-style game, which I feel I have accomplished quite well. The game is rough around the edges but I've gotten a better handle on arrow notation functions, using ternary operators, and a few odds and ends that can make my code more succinct and increase my confidence in programming.
 
-[Demo Video](http://youtube.link.goes.here)
+[Demo Video]([http://youtube.link.goes.here](https://youtu.be/PPVn8kt80sY))
 
 # Development Environment
 
