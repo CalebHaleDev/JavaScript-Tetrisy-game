@@ -6,7 +6,7 @@
     [`style="color:White; background-color:Purple;"`, `style="background-color:lightGreen;"`, `style="background-color:DodgerBlue;"`,
     `style="background-color:White;"`,
     `style="background-color:Orange;"`, `style="background-color:Red;"`, `style="color:Black; background-color:Yellow;"`, `style="color:White; background-color:Gray;"`];
-    var unlockedLevels = 6; //starting level
+    var unlockedLevels = 1; //starting level
     //initialize game
     var score = 0;
     var completedRows = [];
@@ -78,7 +78,8 @@ function doGravity(){
     if(fallerCoords[1]==gameGrid.length-1 || gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
         //check for rows made. This could be changed to only check the row the faller landed in in the future for efficiency
         gameGrid.forEach(element => {
-            if(element.indexOf(emptySpaceCharacter)==-1 && element.reduce((sum, a)=>sum+a)==0){   //if there's no empty space in the row and it sums to 0
+            if(element.indexOf(emptySpaceCharacter)==-1 &&
+            element.reduce((sum, a)=>(Number.isInteger(sum) ? sum : periodicTable[sum]) + (Number.isInteger(a) ? a : periodicTable[a]))==0){   //if there's no empty space in the row and it sums to 0
                 print("row made: "+element);
                 gameGrid[gameGrid.indexOf(element)] = emptyRow.map(x => x); //clear row
                 printGrid();
@@ -131,9 +132,6 @@ var gameloopID = setInterval(()=> {
         doGravity();
         printGrid();
     }
-    testArray = [1, 2, 4, 3];
-    let sumtotal = testArray.reduce((sum, a)=>sum+a);
-    print(sumtotal);
     if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
