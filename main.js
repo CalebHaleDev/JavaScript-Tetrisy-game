@@ -1,7 +1,7 @@
 //to do list:
 //add score, unlocking higher levels and level selection
 //better graphics? (Actual graphics)?
-//add "completed rows" panel, score bonus
+//adjust row-counter to disregard order - only what items are present
 
 //next version to-do list:
 //unfinished items from above
@@ -9,19 +9,20 @@
 //element dataType
 //special powerups
 
-function gameSetup(){
+//gameSetup
     //settings:         you could get user input to change these
-    let startingLevel = 4;
-    emptySpaceCharacter = "  ";
     emptySpaceCharacter = "__";
+    colorScheme = [];   //this will be used later to help the elements be more visually recognizable
+    var unlockedLevels = 1; //starting level
     //initialize game
-    elementList = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg"];
-    periodicTable = {"H":-1, "He":+1, "Li":-1, "Be":-2, "B":-3, "C": +4, "N":+3, "O":+2, "F":+1, "Ne":0, "Na":-1, "Mg":-2};
-    validKeys = ["A","S","D"];
-    level = startingLevel;
+    var score = 0;
+    var completedRows = [];
+    const elementList = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg"];
+    const periodicTable = {"H":-1, "He":+1, "Li":-1, "Be":-2, "B":-3, "C": +4, "N":+3, "O":+2, "F":+1, "Ne":0, "Na":-1, "Mg":-2};
+    const validKeys = ["A","S","D"];
+    level = unlockedLevels;
     levelSetup(1, 5);   //specify additional width, height changes
-    print("starting game loop");
-}
+
 function levelSetup(unscaledWidth, unscaledHeight){
     makeGrid(level+unscaledWidth, level+unscaledHeight);
     setFaller(Math.floor(Math.random()*(gameGrid[0].length)), elementList[Math.floor(Math.random()*(level))] );
@@ -29,6 +30,8 @@ function levelSetup(unscaledWidth, unscaledHeight){
     gravityTimer=Date.now()+Math.min((1100-(100*level)),250);
     shiftTimer=Date.now()+(1000*level/20);
     keypressed = null;
+    //window.score = 0;
+    score = 0; 
     completedRows = [];
 }
 function makeGrid(width, height){
@@ -55,7 +58,7 @@ function printGrid(){
         print("<br>");
     });
     print("score: "+score);
-    //print("btw, now is "+(Date.now()%10000)+"<br>");
+    print("completed: "+completedRows);
     //print("faller is at "+fallerCoords+"<br>");
 }
 function doGravity(){
@@ -78,7 +81,7 @@ function doGravity(){
     //if the faller lands
     if(fallerCoords[1]==gameGrid.length-1 || gameGrid[fallerCoords[1]+1][fallerCoords[0]]!=emptySpaceCharacter){
         //make new faller
-        setFaller(Math.floor(Math.random()*(gameGrid[0].length)), elementList[Math.floor(Math.random()*(level))] );
+        setFaller(Math.floor(Math.random()*(gameGrid[0].length)), elementList[Math.floor(Math.random()*(level+1))] );
 
         //check for rows made. This could be changed to only check the row the faller landed in in the future for efficiency
         gameGrid.forEach(element => {
@@ -95,7 +98,6 @@ function doGravity(){
         });
     }
     gravityTimer=Date.now()+Math.min((1100-(50*level)),500);
-    //level -= .05;
 }
 function shiftFaller(direction){
     //document.getElementById("gameDisplay").innerHTML += "shifting: "+direction;
@@ -114,8 +116,9 @@ function setFaller(xPosition, value){
     fallerCoords = [xPosition,0];
 }
 
-gameSetup();
-var score = 0;  //for some reason it will let other variables be defined in setup, but not score
+//for(var maximumLevel = 20; unlockedLevels<maximumLevel; print("Next Level!")){
+    level = unlockedLevels;
+    levelSetup();
 
 //main game loop
 var gameloopID = setInterval(()=> {
@@ -141,5 +144,12 @@ keypressed = null;
     }
 },100); //refresh rate
 
-console.log("game over");
-document.getElementById("gameDisplay").innerHTML += "game over";
+print("game over");
+if(score>level*100){
+    unlockedLevels++;
+}else{
+    print("you didn't get a high enough score to continue. Thanks for playing!");
+    //is there a way to quit or "return" from the main function?
+}
+//}
+print("you beat all "+maximumLevel+" levels! Good job!");
