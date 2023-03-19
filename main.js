@@ -1,7 +1,10 @@
 //gameSetup
     //settings:         you could get user input to change these
     emptySpaceCharacter = "__";
-    colorScheme = [];   //this will be used later to help the elements be more visually recognizable
+    colorScheme =
+    [`style="background-color:Purple;"`, `style="background-color:lightGreen;"`, `style="background-color:DodgerBlue;"`,
+    `style="background-color:White;"`,
+    `style="background-color:Orange;"`, `style="background-color:Red;"`, `style="background-color:Yellow;"`, `style="background-color:Gray;"`];   //this will be used later to help the elements be more visually recognizable
     var unlockedLevels = 3; //starting level
     //initialize game
     var score = 0;
@@ -41,7 +44,7 @@ function printGrid(){
     document.getElementById("gameDisplay").innerHTML = "<br>";
     gameGrid.forEach(element => {
         element.forEach(element => {
-            print(element.length==emptySpaceCharacter.length ? element : element+emptySpaceCharacter[0]);
+            print(`<t `+colorScheme[periodicTable[element]+3]+`>`+(element.length==emptySpaceCharacter.length ? element : element+emptySpaceCharacter[0])+`</t>`);
         });
         print("<br>");
     });
@@ -126,6 +129,10 @@ var gameloopID = setInterval(()=> {
         doGravity();
         printGrid();
     }
+    print(`<b>`+"test0"+`</b>`);
+    print(`<p style="color:Red;">test</p>`);
+    print(`<ins>`+"test2"+`</ins>`);
+    print(`<t style="color:Red;">Hello World</t>`);
     if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
