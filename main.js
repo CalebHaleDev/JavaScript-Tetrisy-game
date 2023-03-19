@@ -1,11 +1,12 @@
 //gameSetup
     //settings:         you could get user input to change these
     emptySpaceCharacter = "__";
+    spacerCharacter = "";
     colorScheme =
-    [`style="background-color:Purple;"`, `style="background-color:lightGreen;"`, `style="background-color:DodgerBlue;"`,
+    [`style="color:White; background-color:Purple;"`, `style="background-color:lightGreen;"`, `style="background-color:DodgerBlue;"`,
     `style="background-color:White;"`,
-    `style="background-color:Orange;"`, `style="background-color:Red;"`, `style="background-color:Yellow;"`, `style="background-color:Gray;"`];   //this will be used later to help the elements be more visually recognizable
-    var unlockedLevels = 3; //starting level
+    `style="background-color:Orange;"`, `style="background-color:Red;"`, `style="color:Black; background-color:Yellow;"`, `style="color:White; background-color:Gray;"`];
+    var unlockedLevels = 6; //starting level
     //initialize game
     var score = 0;
     var completedRows = [];
@@ -43,12 +44,13 @@ function print(printText){
 function printGrid(){
     document.getElementById("gameDisplay").innerHTML = "<br>";
     gameGrid.forEach(element => {
+        print(`<t text-align="justify">`);
         element.forEach(element => {
-            print(`<t `+colorScheme[periodicTable[element]+3]+`>`+(element.length==emptySpaceCharacter.length ? element : element+emptySpaceCharacter[0])+`</t>`);
+            print(`<t `+colorScheme[periodicTable[element]+3]+`>`+(element.length==emptySpaceCharacter.length ? element : element+emptySpaceCharacter[0])+`</t>`+spacerCharacter);
         });
-        print("<br>");
+        print("</t><br>");
     });
-    print("score: "+score);
+    print("score: "+score+`<br>`);
     print("completed: "+completedRows);
     //print("faller is at "+fallerCoords+"<br>");
 }
@@ -129,10 +131,9 @@ var gameloopID = setInterval(()=> {
         doGravity();
         printGrid();
     }
-    print(`<b>`+"test0"+`</b>`);
-    print(`<p style="color:Red;">test</p>`);
-    print(`<ins>`+"test2"+`</ins>`);
-    print(`<t style="color:Red;">Hello World</t>`);
+    testArray = [1, 2, 4, 3];
+    let sumtotal = testArray.reduce((sum, a)=>sum+a);
+    print(sumtotal);
     if(level<1){    //end game condition
         clearInterval(gameloopID);
     }
