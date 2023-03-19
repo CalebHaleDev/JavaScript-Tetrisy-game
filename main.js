@@ -3,17 +3,11 @@
 //better graphics? (Actual graphics)?
 //adjust row-counter to disregard order - only what items are present
 
-//next version to-do list:
-//unfinished items from above
-//better graphics (actual graphics) if not done already
-//element dataType
-//special powerups
-
 //gameSetup
     //settings:         you could get user input to change these
     emptySpaceCharacter = "__";
     colorScheme = [];   //this will be used later to help the elements be more visually recognizable
-    var unlockedLevels = 1; //starting level
+    var unlockedLevels = 3; //starting level
     //initialize game
     var score = 0;
     var completedRows = [];
@@ -118,7 +112,7 @@ function setFaller(xPosition, value){
 
 //for(var maximumLevel = 20; unlockedLevels<maximumLevel; print("Next Level!")){
     level = unlockedLevels;
-    levelSetup();
+    levelSetup(1,5);
 
 //main game loop
 var gameloopID = setInterval(()=> {
